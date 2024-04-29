@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 1
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s
+      - -w
+      - -X main.version={{ .Version }}
+    goos:
+      - linux
+      - windows
+      - darwin
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - none*
+
+checksum:
+  name_template: checksums.txt
+
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    output: true
+    artifacts: checksum
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - --yes
+
+changelog:
+  use: git
+  sort: asc
+  groups:
+    - title: Dependency updates
+      regexp: ^.*?\(deps\)!?:.+$
+      order: 100
+    - title: New features
+      regexp: ^.*?feat(\([[:word:]]+\))??!?:.+$
+      order: 1
+    - title: Security updates
+      regexp: ^.*?sec(\([[:word:]]+\))??!?:.+$
+      order: 2
+    - title: Bug fixes
+      regexp: ^.*?fix(\([[:word:]]+\))??!?:.+$
+      order: 3
+    - title: Testing
+      regexp: ^.*?test(\([[:word:]]+\))??!?:.+$
+      order: 4
+    - title: Documentation updates
+      regexp: ^.*?docs(\([[:word:]]+\))??!?:.+$
+      order: 5
+    - title: Build process updates
+      regexp: ^.*?(build|ci)(\([[:word:]]+\))??!?:.+$
+      order: 6
+    - title: Other work
+      order: 999

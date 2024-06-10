@@ -1,6 +1,12 @@
 # Cloud Integration Navigator
 
+[![Latest release](https://img.shields.io/github/release/vadimklimov/cpi-navigator)](https://github.com/vadimklimov/cpi-navigator/releases/latest)
+[![Codacy](https://app.codacy.com/project/badge/Grade/95069cb0a3f24e43a91978cd1d5bbeb2)](https://app.codacy.com/gh/vadimklimov/cpi-navigator/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![License](https://img.shields.io/github/license/vadimklimov/cpi-navigator)](https://opensource.org/license/MIT)
+
 _Cloud Integration Navigator_, or _CPI Navigator_ for short, is a terminal-based application to browse and explore content packages and integration artifacts within an SAP Cloud Integration (a part of SAP Integration Suite) tenant's workspace.
+
+![cpi-navigator](https://github.com/vadimklimov/cpi-navigator/assets/14906963/fbff81f8-56d6-4849-8aea-4d4b98a6dc25)
 
 ## Requirements
 

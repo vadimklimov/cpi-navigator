@@ -11,7 +11,7 @@ require (
 	github.com/golang-module/carbon/v2 v2.3.12
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.15.2
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.18.2
 	golang.org/x/net v0.27.0
 	golang.org/x/oauth2 v0.21.0

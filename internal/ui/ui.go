@@ -18,7 +18,6 @@ import (
 
 func Start() error {
 	program := tea.NewProgram(NewModel(), tea.WithAltScreen())
-	program.SetWindowTitle(internal.AppShortName)
 
 	if _, err := program.Run(); err != nil {
 		log.Fatal("Program failed to start", "err", err)
@@ -64,6 +63,7 @@ func NewModel() *Model {
 
 func (model Model) Init() tea.Cmd {
 	return tea.Batch(
+		tea.SetWindowTitle(internal.AppShortName),
 		model.packages.Init(),
 		model.artifacts.Init(),
 		model.attributes.Init(),

@@ -46,7 +46,7 @@ func New() *Model {
 		list.SetShowStatusBar(false)
 		list.SetStatusBarItemName("artifact", "artifacts")
 		list.InfiniteScrolling = true
-		list.Styles.NoItems = common.Styles.IntegrationArtifactsPane.Dataset.NoItems.Copy()
+		list.Styles.NoItems = common.Styles.IntegrationArtifactsPane.Dataset.NoItems
 
 		return list
 	}

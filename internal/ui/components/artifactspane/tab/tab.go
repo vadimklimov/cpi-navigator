@@ -75,9 +75,9 @@ func (model *Model) View() string {
 
 	for idx, tab := range model.tabs {
 		if idx == model.activeTabID {
-			style = model.common.Styles.IntegrationArtifactsPane.Tabs.Tab.Active.Copy()
+			style = model.common.Styles.IntegrationArtifactsPane.Tabs.Tab.Active
 		} else {
-			style = model.common.Styles.IntegrationArtifactsPane.Tabs.Tab.Inactive.Copy()
+			style = model.common.Styles.IntegrationArtifactsPane.Tabs.Tab.Inactive
 		}
 
 		builder.WriteString(style.Render(tab.Label))

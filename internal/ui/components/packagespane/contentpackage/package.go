@@ -34,7 +34,7 @@ func New() *Model {
 		list.SetShowStatusBar(false)
 		list.SetStatusBarItemName("package", "packages")
 		list.InfiniteScrolling = true
-		list.Styles.NoItems = common.Styles.ContentPackagesPane.Dataset.NoItems.Copy()
+		list.Styles.NoItems = common.Styles.ContentPackagesPane.Dataset.NoItems
 
 		return list
 	}

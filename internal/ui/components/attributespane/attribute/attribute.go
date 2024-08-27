@@ -30,9 +30,9 @@ func New() *Model {
 		BorderColumn(false).
 		StyleFunc(func(_, col int) lipgloss.Style {
 			if col == 0 {
-				return common.Styles.AttributesPane.Attribute.Key.Copy()
+				return common.Styles.AttributesPane.Attribute.Key
 			} else {
-				return common.Styles.AttributesPane.Attribute.Value.Copy()
+				return common.Styles.AttributesPane.Attribute.Value
 			}
 		})
 

@@ -45,9 +45,9 @@ func (itemDelegate ItemDelegate) Render(writer io.Writer, model list.Model, inde
 
 	var style lipgloss.Style
 	if index == model.Index() {
-		style = itemDelegate.common.Styles.ContentPackagesPane.Dataset.Item.Selected.Copy()
+		style = itemDelegate.common.Styles.ContentPackagesPane.Dataset.Item.Selected
 	} else {
-		style = itemDelegate.common.Styles.ContentPackagesPane.Dataset.Item.Normal.Copy()
+		style = itemDelegate.common.Styles.ContentPackagesPane.Dataset.Item.Normal
 	}
 
 	width := model.Width() - style.GetHorizontalFrameSize()

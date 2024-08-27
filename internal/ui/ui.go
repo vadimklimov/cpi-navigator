@@ -221,14 +221,14 @@ func (model Model) View() string {
 
 	switch model.activePane {
 	case PackagesPane:
-		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Active.Copy()
-		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Inactive.Copy()
+		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Active
+		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Inactive
 	case ArtifactsPane:
-		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Inactive.Copy()
-		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Active.Copy()
+		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Inactive
+		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Active
 	default:
-		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Inactive.Copy()
-		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Inactive.Copy()
+		packagesPaneStyle = model.common.Styles.ContentPackagesPane.Inactive
+		artifactsPaneStyle = model.common.Styles.IntegrationArtifactsPane.Inactive
 	}
 
 	packagesPane = packagesPaneStyle.Render(

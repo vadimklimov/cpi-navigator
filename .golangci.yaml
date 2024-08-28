@@ -10,22 +10,15 @@ linters:
   enable-all: true
   disable:
     # Deprecated
-    - deadcode
-    - exhaustivestruct
-    - golint
-    - ifshort
-    - interfacer
-    - maligned
-    - nosnakecase
-    - scopelint
-    - structcheck
-    - varcheck
+    - execinquery
+    - exportloopref
+    - gomnd
     # Other
     - depguard
+    - err113
     - exhaustruct
     - forcetypeassert
     - gochecknoglobals
     - gocritic
-    - goerr113
     - ireturn
     - perfsprint

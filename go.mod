@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/charmbracelet/bubbles v0.18.0
 	github.com/charmbracelet/bubbletea v0.26.6
-	github.com/charmbracelet/lipgloss v0.12.1
+	github.com/charmbracelet/lipgloss v0.13.0
 	github.com/charmbracelet/log v0.4.0
 	github.com/go-resty/resty/v2 v2.13.1
 	github.com/golang-module/carbon/v2 v2.3.12

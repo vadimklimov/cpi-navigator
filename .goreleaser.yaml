@@ -11,7 +11,7 @@ builds:
     ldflags:
       - -s
       - -w
-      - -X main.version={{ .Version }}
+      - -X github.com/vadimklimov/cpi-navigator/internal/appinfo.version={{ .Version }}
     goos:
       - linux
       - windows

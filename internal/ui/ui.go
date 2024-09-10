@@ -5,7 +5,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
-	"github.com/vadimklimov/cpi-navigator/internal"
+	"github.com/vadimklimov/cpi-navigator/internal/appinfo"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/artifactspane/integrationartifact"
@@ -63,7 +63,7 @@ func NewModel() *Model {
 
 func (model Model) Init() tea.Cmd {
 	return tea.Batch(
-		tea.SetWindowTitle(internal.AppShortName),
+		tea.SetWindowTitle(appinfo.Name()),
 		model.packages.Init(),
 		model.artifacts.Init(),
 		model.attributes.Init(),

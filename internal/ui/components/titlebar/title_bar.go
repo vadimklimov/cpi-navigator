@@ -2,7 +2,7 @@ package titlebar
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/vadimklimov/cpi-navigator/internal"
+	"github.com/vadimklimov/cpi-navigator/internal/appinfo"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 )
 
@@ -14,7 +14,7 @@ type Model struct {
 func New() *Model {
 	return &Model{
 		common: common.New(),
-		title:  internal.AppLongName,
+		title:  appinfo.FullName(),
 	}
 }
 

@@ -5,16 +5,12 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/charmbracelet/log"
-	"github.com/muesli/reflow/indent"
-	"github.com/muesli/reflow/padding"
-	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/vadimklimov/cpi-navigator/internal"
+	"github.com/vadimklimov/cpi-navigator/internal/appinfo"
 	"github.com/vadimklimov/cpi-navigator/internal/ui"
 	"github.com/vadimklimov/cpi-navigator/internal/util"
 )
@@ -62,10 +58,10 @@ var (
 
 func NewCmd() *cobra.Command {
 	cmd = &cobra.Command{
-		Use:           "cpi-navigator",
-		Version:       internal.AppVersion,
-		Short:         internal.AppShortName,
-		Long:          internal.AppLongName,
+		Use:           appinfo.ID(),
+		Version:       appinfo.Version(),
+		Short:         appinfo.Name(),
+		Long:          appinfo.FullName(),
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		Run: func(_ *cobra.Command, _ []string) {
@@ -75,7 +71,7 @@ func NewCmd() *cobra.Command {
 		},
 	}
 
-	cmd.SetVersionTemplate(version())
+	cmd.SetVersionTemplate(appinfo.GetInstance().String())
 
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "",
 		fmt.Sprintf("configuration file [default: ./%[2]s, ~/%[1]s/%[2]s]",
@@ -104,39 +100,6 @@ func Execute() {
 	if err := cmd.Execute(); err != nil {
 		logger.Fatal("Initialization failed", "err", err)
 	}
-}
-
-func version() string {
-	terminalColourProfile := func() string {
-		switch termenv.EnvColorProfile() {
-		case termenv.TrueColor:
-			return "True Color"
-		case termenv.ANSI256:
-			return "ANSI256"
-		case termenv.ANSI:
-			return "ANSI"
-		case termenv.Ascii:
-			return "ASCII (Uncolored)"
-		default:
-			return ""
-		}
-	}
-
-	label := func(text string) string {
-		var textWidth, textIndent uint = 20, 2
-
-		return indent.String(padding.String(text+":", textWidth), textIndent)
-	}
-
-	builder := strings.Builder{}
-	builder.WriteString(fmt.Sprintf("%s:\n", internal.AppShortName))
-	builder.WriteString(fmt.Sprintf("%s %s\n", label("Version"), cmd.Version))
-	builder.WriteString("\n")
-	builder.WriteString("Runtime environment:\n")
-	builder.WriteString(fmt.Sprintf("%s %s/%s\n", label("Platform"), runtime.GOOS, runtime.GOARCH))
-	builder.WriteString(fmt.Sprintf("%s %s\n", label("Color profile"), terminalColourProfile()))
-
-	return builder.String()
 }
 
 func initLogger() {

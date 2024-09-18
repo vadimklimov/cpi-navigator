@@ -2,21 +2,21 @@ package client
 
 import (
 	"github.com/go-resty/resty/v2"
-	"github.com/spf13/viper"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
 func NewClient() *resty.Client {
-	config := &clientcredentials.Config{
-		TokenURL:     viper.GetString("tenant.token_url"),
-		ClientID:     viper.GetString("tenant.client_id"),
-		ClientSecret: viper.GetString("tenant.client_secret"),
+	oauthConfig := &clientcredentials.Config{
+		TokenURL:     config.TenantTokenURL().String(),
+		ClientID:     config.TenantClientID(),
+		ClientSecret: config.TenantClientSecret(),
 	}
 
-	httpClient := config.Client(context.Background())
+	httpClient := oauthConfig.Client(context.Background())
 	restyClient := resty.NewWithClient(httpClient).
-		SetBaseURL(viper.GetString("tenant.base_url"))
+		SetBaseURL(config.TenantBaseURL().String())
 
 	return restyClient
 }

@@ -2,45 +2,23 @@ package cmd
 
 import (
 	"fmt"
-	"net/url"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/vadimklimov/cpi-navigator/internal/appinfo"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/ui"
 	"github.com/vadimklimov/cpi-navigator/internal/util"
 )
 
-const (
-	UserCfgDir              = ".config"
-	AppCfgDir               = "cpi-navigator"
-	DefaultCfgFileName      = "config"
-	DefaultCfgFileExtension = "yaml"
-	DefaultLogLevel         = "info"
-)
+const DefaultLogLevel = "info"
 
 // Set using command flags at runtime.
 var (
-	cfgFile  string
-	logLevel string
-)
-
-var (
-	mandatoryConfigParams = []string{
-		"tenant.base_url",
-		"tenant.token_url",
-		"tenant.client_id",
-		"tenant.client_secret",
-	}
-
-	optionalConfigParams = []string{
-		"tenant.name",
-		"tenant.webui_url",
-	}
+	configFile string
+	logLevel   string
 )
 
 var logLevels = []string{
@@ -73,10 +51,10 @@ func NewCmd() *cobra.Command {
 
 	cmd.SetVersionTemplate(appinfo.GetInstance().String())
 
-	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "",
+	cmd.PersistentFlags().StringVarP(&configFile, "config", "c", "",
 		fmt.Sprintf("configuration file [default: ./%[2]s, ~/%[1]s/%[2]s]",
-			filepath.Join(UserCfgDir, AppCfgDir),
-			strings.Join([]string{DefaultCfgFileName, DefaultCfgFileExtension}, "."),
+			filepath.Join(config.DefaultUserConfigDir, config.DefaultAppConfigDir),
+			strings.Join([]string{config.DefaultConfigFileName, config.DefaultConfigFileExt}, "."),
 		),
 	)
 
@@ -87,9 +65,7 @@ func NewCmd() *cobra.Command {
 
 	cobra.OnInitialize(
 		initLogger,
-		initConfig,
-		checkMandatoryConfig,
-		setDefaultConfig,
+		func() { config.Init(configFile) },
 	)
 
 	return cmd
@@ -111,67 +87,4 @@ func initLogger() {
 	}
 
 	log.SetDefault(logger)
-}
-
-func initConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
-		workDir, err := os.Getwd()
-		if err != nil {
-			log.Fatal("Unable to determine current (working) directory", "err", err)
-		}
-
-		homeDir, err := os.UserHomeDir()
-		if err != nil {
-			log.Fatal("Unable to determine user's home directory", "err", err)
-		}
-
-		viper.AddConfigPath(workDir)
-		viper.AddConfigPath(filepath.Join(homeDir, UserCfgDir, AppCfgDir))
-		viper.SetConfigName(DefaultCfgFileName)
-		viper.SetConfigType(DefaultCfgFileExtension)
-	}
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal("Unable to read configuration", "err", err)
-	}
-}
-
-func checkMandatoryConfig() {
-	missingConfigParams := make([]string, 0)
-
-	for _, param := range mandatoryConfigParams {
-		if !viper.IsSet(param) {
-			missingConfigParams = append(missingConfigParams, param)
-		}
-	}
-
-	if len(missingConfigParams) > 0 {
-		log.Fatal(
-			"Mandatory configuration parameters were not provided",
-			"required", strings.Join(mandatoryConfigParams, ", "),
-			"optional", strings.Join(optionalConfigParams, ", "),
-			"provided", strings.Join(viper.AllKeys(), ", "),
-			"not provided", strings.Join(missingConfigParams, ", "),
-		)
-	}
-}
-
-func setDefaultConfig() {
-	// Set tenant name.
-	var tenantName string
-
-	if viper.IsSet("tenant.webui_url") {
-		tenantURL, err := url.Parse(viper.GetString("tenant.webui_url"))
-		if err != nil {
-			log.Fatal("The value provided for the configuration parameter tenant.webui_url is incorrect", "err", err)
-		}
-
-		tenantName = strings.Split(tenantURL.Hostname(), ".")[0]
-	} else {
-		tenantName = "SAP Cloud Integration"
-	}
-
-	viper.SetDefault("tenant.name", tenantName)
 }

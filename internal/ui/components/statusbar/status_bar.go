@@ -4,7 +4,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/truncate"
-	"github.com/spf13/viper"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 )
 
@@ -18,8 +18,8 @@ type StatusMsg string
 func New() *Model {
 	return &Model{
 		common:  common.New(),
-		tenant:  viper.GetString("tenant.name"),
-		message: viper.GetString("tenant.webui_url"),
+		tenant:  config.TenantName(),
+		message: config.TenantWebUIURL().String(),
 	}
 }
 

@@ -98,14 +98,14 @@ The following configuration parameters are supported:
 
 The `tenant` configuration section.
 
-| Parameter     | Description                                                                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| base_url      | Base URL. _In a Cloud Foundry environment, can be found in the service instance key: the `url` attribute in the `oauth` section_                  |
-| token_url     | Token URL. _In a Cloud Foundry environment, can be found in the service instance key: the `tokenurl` attribute in the `oauth` section_            |
-| client_id     | Client ID. _In a Cloud Foundry environment, can be found in the service instance key: the `clientid` attribute in the `oauth` section_            |
-| client_secret | Client secret. _In a Cloud Foundry environment, can be found in the service instance key: the `clientsecret` attribute in the `oauth` section_    |
-| name          | _(optional)_ Tenant name (alias) to be displayed in the status bar. If not provided and if tenant URL is provided, the tenant's subdomain is used |
-| webui_url     | _(optional)_ Tenant URL to be displayed in the status bar                                                                                         |
+| Parameter     | Description                                                                                                                                    |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| webui_url     | WebUI URL (SAP Integration Suite home page URL)                                                                                                |
+| base_url      | Base URL. _In a Cloud Foundry environment, can be found in the service instance key: the `url` attribute in the `oauth` section_               |
+| token_url     | Token URL. _In a Cloud Foundry environment, can be found in the service instance key: the `tokenurl` attribute in the `oauth` section_         |
+| client_id     | Client ID. _In a Cloud Foundry environment, can be found in the service instance key: the `clientid` attribute in the `oauth` section_         |
+| client_secret | Client secret. _In a Cloud Foundry environment, can be found in the service instance key: the `clientsecret` attribute in the `oauth` section_ |
+| name          | _(optional)_ Tenant name (alias) to be displayed in the status bar. If not provided, the tenant's subdomain is used                            |
 
 ### Example
 

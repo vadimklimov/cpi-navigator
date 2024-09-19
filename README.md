@@ -16,10 +16,9 @@ CPI Navigator makes use of open (public) APIs of SAP Cloud Integration to fetch 
 
 To enable CPI Navigator to access the necessary APIs of the SAP Cloud Integration tenant, it is necessary to create an OAuth client for it in the SAP Business Technology Platform subaccount where the corresponding subscription for SAP Integration Suite has been created. The steps for creating an OAuth client for SAP Cloud Integration vary depending on the environment, whether it is Neo or Cloud Foundry.
 
-> [!CAUTION]
+> [!IMPORTANT]
 > CPI Navigator has been tested with SAP Cloud Integration provisioned in a Cloud Foundry environment. Use it with SAP Cloud Integration provisioned in a Neo environment at your own risk.
-
-> [!NOTE]
+>
 > In alignment with SAP's strategic direction to phase out support for a Neo environment in the SAP Business Technology Platform over the long term and to focus future innovations on the multi-cloud foundation (see [SAP Note 3351844](https://me.sap.com/notes/3351844)), it is important to note that there are no plans to enable CPI Navigator to support functionalities exclusive to SAP Cloud Integration in a Neo environment.
 
 #### SAP Cloud Integration in Cloud Foundry environment
@@ -59,10 +58,10 @@ Connections from the CPI Navigator to the SAP Cloud Integration tenant are HTTP-
 > [!NOTE]
 > For information about IP addresses that are associated with SAP Cloud Integration, see [SAP Note 2808441](https://me.sap.com/notes/2808441).
 > For further details, refer to the following SAP Help documentation:
+>
 > - [IP addresses information](https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-available-for-cloud-foundry-environment) for tenants provisioned in a **Cloud Foundry** environment,
 > - [IP addresses information](https://help.sap.com/docs/btp/sap-btp-neo-environment/regions-and-hosts-available-for-neo-environment) for tenants provisioned in a **Neo** environment.
-
-> [!IMPORTANT]
+>
 > IP addresses associated with SAP Cloud Integration are specific to the infrastructure provider and the region where the corresponding SAP Cloud Integration tenant is provisioned. This principle also extends to the broader SAP Integration Suite and other services within the SAP Business Technology Platform.
 
 ## Installation

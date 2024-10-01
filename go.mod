@@ -4,7 +4,7 @@ go 1.23.1
 
 require (
 	github.com/charmbracelet/bubbles v0.19.0
-	github.com/charmbracelet/bubbletea v1.1.0
+	github.com/charmbracelet/bubbletea v1.1.1
 	github.com/charmbracelet/lipgloss v0.13.0
 	github.com/charmbracelet/log v0.4.0
 	github.com/go-resty/resty/v2 v2.15.3

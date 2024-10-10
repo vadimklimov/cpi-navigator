@@ -14,6 +14,7 @@ import (
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/packagespane/contentpackage"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/statusbar"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/titlebar"
+	"github.com/vadimklimov/cpi-navigator/internal/ui/tools/browser"
 )
 
 func Start() error {
@@ -142,6 +143,15 @@ func (model Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				cmds = append(cmds,
 					model.attributes.AttributesCmd(model.packages.SelectedPackageAttributes()),
 				)
+			}
+
+		case key.Matches(msg, model.common.KeyMap.Open):
+			if model.activePane == PackagesPane {
+				if model.packages.SelectedPackageID() != nil {
+					cmds = append(cmds,
+						browser.OpenURLCmd(model.packages.SelectedPackageWebUIURL()),
+					)
+				}
 			}
 		}
 

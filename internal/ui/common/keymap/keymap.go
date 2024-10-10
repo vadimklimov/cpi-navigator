@@ -10,6 +10,7 @@ type KeyMap struct {
 	Enter key.Binding
 	Tab   key.Binding
 	Quit  key.Binding
+	Open  key.Binding
 }
 
 func DefaultKeyMap() *KeyMap {
@@ -48,6 +49,11 @@ func DefaultKeyMap() *KeyMap {
 	keymap.Quit = key.NewBinding(
 		key.WithKeys("q", "ctrl+c"),
 		key.WithHelp("q", "quit"),
+	)
+
+	keymap.Open = key.NewBinding(
+		key.WithKeys("o"),
+		key.WithHelp("o", "open"),
 	)
 
 	return keymap

@@ -1,10 +1,13 @@
 package contentpackage
 
 import (
+	"net/url"
+
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/golang-module/carbon/v2"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
@@ -129,4 +132,20 @@ func (model *Model) SelectedPackageAttributes() []attribute.Attribute {
 		{Key: "Modified by", Value: pkg.ModifiedBy},
 		{Key: "Modified at", Value: carbon.CreateFromTimestampMilli(pkg.ModifiedDate).ToIso8601ZuluString()},
 	}
+}
+
+func (model *Model) SelectedPackageWebUIURL() *url.URL {
+	tenantWebUIURL := config.TenantWebUIURL()
+	if tenantWebUIURL == nil {
+		return nil
+	}
+
+	tenantWorkspaceWebUIURL := tenantWebUIURL.JoinPath("shell/design")
+
+	selectedPackageID := model.SelectedPackageID()
+	if selectedPackageID == nil {
+		return tenantWorkspaceWebUIURL
+	}
+
+	return tenantWorkspaceWebUIURL.JoinPath("contentpackage", *selectedPackageID)
 }

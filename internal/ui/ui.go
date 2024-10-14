@@ -146,10 +146,18 @@ func (model Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case key.Matches(msg, model.common.KeyMap.Open):
-			if model.activePane == PackagesPane {
+			switch model.activePane {
+			case PackagesPane:
 				if model.packages.SelectedPackageID() != nil {
 					cmds = append(cmds,
 						browser.OpenURLCmd(model.packages.SelectedPackageWebUIURL()),
+					)
+				}
+
+			case ArtifactsPane:
+				if model.artifacts.SelectedArtifactID() != nil {
+					cmds = append(cmds,
+						browser.OpenURLCmd(model.artifacts.SelectedArtifactWebUIURL()),
 					)
 				}
 			}

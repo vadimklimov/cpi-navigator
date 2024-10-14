@@ -1,10 +1,13 @@
 package integrationartifact
 
 import (
+	"net/url"
+
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/golang-module/carbon/v2"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
@@ -235,6 +238,28 @@ func (model *Model) selectedArtifactItem() list.Item {
 	}
 }
 
+func (model *Model) SelectedArtifactID() *string {
+	selectedArtifactItem := model.selectedArtifactItem()
+	if selectedArtifactItem == nil {
+		return nil
+	}
+
+	selectedArtifact := selectedArtifactItem.(Item)
+
+	return &selectedArtifact.ID
+}
+
+func (model *Model) SelectedArtifactPackageID() *string {
+	selectedArtifactItem := model.selectedArtifactItem()
+	if selectedArtifactItem == nil {
+		return nil
+	}
+
+	selectedArtifact := selectedArtifactItem.(Item)
+
+	return &selectedArtifact.PackageID
+}
+
 func (model *Model) SelectedArtifactAttributes() []attribute.Attribute {
 	selectedArtifactItem := model.selectedArtifactItem()
 	if selectedArtifactItem == nil {
@@ -269,4 +294,38 @@ func (model *Model) SelectedArtifactAttributes() []attribute.Attribute {
 	default:
 		return []attribute.Attribute{}
 	}
+}
+
+func (model *Model) SelectedArtifactWebUIURL() *url.URL {
+	tenantWebUIURL := config.TenantWebUIURL()
+	if tenantWebUIURL == nil {
+		return nil
+	}
+
+	tenantWorkspaceWebUIURL := tenantWebUIURL.JoinPath("shell/design")
+
+	selectedArtifactID := model.SelectedArtifactID()
+	selectedArtifactPackageID := model.SelectedArtifactPackageID()
+
+	if selectedArtifactPackageID == nil {
+		return tenantWorkspaceWebUIURL
+	}
+
+	var selectedArtifactResourceType string
+
+	switch model.selectedArtifactType {
+	case supportedArtifactTypes.Designtime.IntegrationFlow.Name:
+		selectedArtifactResourceType = supportedArtifactTypes.Designtime.IntegrationFlow.ResourceType
+	case supportedArtifactTypes.Designtime.ValueMapping.Name:
+		selectedArtifactResourceType = supportedArtifactTypes.Designtime.ValueMapping.ResourceType
+	case supportedArtifactTypes.Designtime.MessageMapping.Name:
+		selectedArtifactResourceType = supportedArtifactTypes.Designtime.MessageMapping.ResourceType
+	case supportedArtifactTypes.Designtime.ScriptCollection.Name:
+		selectedArtifactResourceType = supportedArtifactTypes.Designtime.ScriptCollection.ResourceType
+	}
+
+	return tenantWorkspaceWebUIURL.JoinPath(
+		"contentpackage", *selectedArtifactPackageID,
+		selectedArtifactResourceType, *selectedArtifactID,
+	)
 }

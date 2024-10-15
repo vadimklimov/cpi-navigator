@@ -146,6 +146,7 @@ The following key bindings are supported:
 | ↑ / ↓        | Navigate to the previous/next item within the active pane                               |
 | ← / →        | Navigate to the previous/next tab in the integration artifacts pane                     |
 | q / Ctrl + C | Quit the application                                                                    |
+| o            | Open the selected content package or integration artifact in Web UI                     |
 
 ## Notes
 

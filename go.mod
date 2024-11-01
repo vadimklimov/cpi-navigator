@@ -8,7 +8,7 @@ require (
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/charmbracelet/log v0.4.0
 	github.com/go-resty/resty/v2 v2.15.3
-	github.com/golang-module/carbon/v2 v2.3.12
+	github.com/golang-module/carbon/v2 v2.4.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/muesli/reflow v0.3.0
 	github.com/muesli/termenv v0.15.2

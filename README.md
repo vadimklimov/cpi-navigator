@@ -106,6 +106,12 @@ The `tenant` configuration section.
 | client_secret | Client secret. _In a Cloud Foundry environment, can be found in the service instance key: the `clientsecret` attribute in the `oauth` section_ |
 | name          | _(optional)_ Tenant name (alias) to be displayed in the status bar. If not provided, the tenant's subdomain is used                            |
 
+The `ui` configuration section.
+
+| Parameter | Description                                                                                    |
+| --------- | ---------------------------------------------------------------------------------------------- |
+| layout    | _(optional)_ Layout. Valid values: `normal` (default), `compact` (no title bar and status bar) |
+
 ### Example
 
 Below is an example of a `config.yaml` file:
@@ -118,6 +124,8 @@ tenant:
   token_url: https://<subdomain>.authentication.<region>.hana.ondemand.com/oauth/token
   client_id: xxxxxxxxxx
   client_secret: xxxxxxxxxx
+ui:
+  layout: normal
 ```
 
 ## Usage
@@ -146,6 +154,7 @@ The following key bindings are supported:
 | ↑ / ↓        | Navigate to the previous/next item within the active pane                               |
 | ← / →        | Navigate to the previous/next tab in the integration artifacts pane                     |
 | q / Ctrl + C | Quit the application                                                                    |
+| l            | Toggle layout (switch between normal and compact layouts)                               |
 | o            | Open the selected content package or integration artifact in Web UI                     |
 
 ## Notes

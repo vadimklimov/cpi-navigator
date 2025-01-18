@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
 	"github.com/vadimklimov/cpi-navigator/internal/appinfo"
+	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/artifactspane/integrationartifact"
@@ -35,10 +36,18 @@ type Model struct {
 	tabs          *tab.Model
 	titlebar      *titlebar.Model
 	statusbar     *statusbar.Model
+	layout        int
 	activePane    int
 	showArtifacts bool
 	err           error
 }
+
+type LayoutMsg int
+
+const (
+	LayoutNormal = iota
+	LayoutCompact
+)
 
 const (
 	PackagesPane = iota
@@ -48,6 +57,15 @@ const (
 )
 
 func NewModel() *Model {
+	var layout int
+
+	switch config.UILayout() {
+	case config.LayoutNormal:
+		layout = LayoutNormal
+	case config.LayoutCompact:
+		layout = LayoutCompact
+	}
+
 	return &Model{
 		common:        common.New(),
 		packages:      contentpackage.New(),
@@ -56,6 +74,7 @@ func NewModel() *Model {
 		tabs:          tab.New(),
 		titlebar:      titlebar.New(),
 		statusbar:     statusbar.New(),
+		layout:        layout,
 		activePane:    NoPane,
 		showArtifacts: false,
 		err:           nil,
@@ -161,7 +180,13 @@ func (model Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					)
 				}
 			}
+
+		case key.Matches(msg, model.common.KeyMap.Layout):
+			cmds = append(cmds, model.ToggleLayoutCmd())
 		}
+
+	case LayoutMsg:
+		model.layout = int(msg)
 
 	case contentpackage.ContentPackagesMsg:
 		model.activePane = PackagesPane
@@ -267,6 +292,14 @@ func (model Model) View() string {
 
 	artifactsPane = artifactsPaneStyle.Render(artifactsPaneContent)
 
+	if model.layout == LayoutCompact {
+		return lipgloss.JoinVertical(
+			lipgloss.Center,
+			lipgloss.JoinHorizontal(lipgloss.Top, packagesPane, artifactsPane),
+			model.common.Styles.AttributesPane.Area.Render(model.attributes.View()),
+		)
+	}
+
 	return lipgloss.JoinVertical(
 		lipgloss.Center,
 		model.common.Styles.TitleBar.Area.Render(model.titlebar.View()),
@@ -274,4 +307,17 @@ func (model Model) View() string {
 		model.common.Styles.AttributesPane.Area.Render(model.attributes.View()),
 		model.common.Styles.StatusBar.Area.Render(model.statusbar.View()),
 	)
+}
+
+func (model *Model) ToggleLayoutCmd() tea.Cmd {
+	return func() tea.Msg {
+		switch model.layout {
+		case LayoutNormal:
+			return LayoutMsg(LayoutCompact)
+		case LayoutCompact:
+			return LayoutMsg(LayoutNormal)
+		default:
+			return LayoutMsg(LayoutNormal)
+		}
+	}
 }

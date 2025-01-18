@@ -11,6 +11,11 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Config struct {
+	Tenant *Tenant `mapstructure:"tenant"`
+	UI     *UI     `mapstructure:"ui"`
+}
+
 type Tenant struct {
 	Name         string   `mapstructure:"name"`
 	WebUIURL     *url.URL `mapstructure:"webui_url"`
@@ -20,11 +25,16 @@ type Tenant struct {
 	ClientSecret string   `mapstructure:"client_secret"`
 }
 
-type Config struct {
-	Tenant *Tenant `mapstructure:"tenant"`
+type UI struct {
+	Layout Layout `mapstructure:"layout"`
 }
 
-var cfg *Config
+type Layout string
+
+const (
+	LayoutNormal  Layout = "normal"
+	LayoutCompact Layout = "compact"
+)
 
 const (
 	DefaultUserConfigDir  = ".config"
@@ -33,8 +43,13 @@ const (
 	DefaultConfigFileExt  = "yaml"
 )
 
+var cfg *Config
+
 func Init(configFile string) {
-	cfg = &Config{}
+	cfg = &Config{
+		Tenant: &Tenant{},
+		UI:     &UI{},
+	}
 
 	if err := cfg.load(configFile); err != nil {
 		log.Fatal("Unable to load configuration", "err", err)
@@ -69,6 +84,10 @@ func TenantClientID() string {
 
 func TenantClientSecret() string {
 	return cfg.Tenant.ClientSecret
+}
+
+func UILayout() Layout {
+	return cfg.UI.Layout
 }
 
 func (c *Config) load(configFile string) error {
@@ -138,5 +157,15 @@ func (c *Config) setDefaults() {
 	// Set tenant name.
 	if c.Tenant.Name == "" {
 		c.Tenant.Name = strings.Split(c.Tenant.WebUIURL.Hostname(), ".")[0]
+	}
+
+	// Set UI layout.
+	layout := Layout(strings.ToLower(string(c.UI.Layout)))
+
+	switch layout {
+	case LayoutNormal, LayoutCompact:
+		c.UI.Layout = layout
+	default:
+		c.UI.Layout = LayoutNormal
 	}
 }

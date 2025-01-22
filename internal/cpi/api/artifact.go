@@ -7,9 +7,9 @@ import (
 )
 
 type IntegrationArtifact struct {
-	PackageID   string `json:"PackageId"`
 	ID          string `json:"Id"`
 	Version     string `json:"Version"`
+	PackageID   string `json:"PackageId"`
 	Name        string `json:"Name"`
 	Description string `json:"Description"`
 	CreatedBy   string `json:"CreatedBy"`

@@ -27,13 +27,39 @@ type Tenant struct {
 
 type UI struct {
 	Layout Layout `mapstructure:"layout"`
+	Panes  Panes  `mapstructure:",squash"`
 }
 
 type Layout string
 
+type Panes struct {
+	Packages  PackagesPane  `mapstructure:"packages_pane"`
+	Artifacts ArtifactsPane `mapstructure:"artifacts_pane"`
+}
+
+type PackagesPane struct {
+	Sort Sort `mapstructure:",squash"`
+}
+
+type ArtifactsPane struct {
+	Sort Sort `mapstructure:",squash"`
+}
+
+type Sort struct {
+	Field string    `mapstructure:"sort_field"`
+	Order SortOrder `mapstructure:"sort_order"`
+}
+
+type SortOrder string
+
 const (
 	LayoutNormal  Layout = "normal"
 	LayoutCompact Layout = "compact"
+)
+
+const (
+	SortOrderAscending  SortOrder = "asc"
+	SortOrderDescending SortOrder = "desc"
 )
 
 const (
@@ -88,6 +114,22 @@ func TenantClientSecret() string {
 
 func UILayout() Layout {
 	return cfg.UI.Layout
+}
+
+func UIPackagesPaneSortField() string {
+	return cfg.UI.Panes.Packages.Sort.Field
+}
+
+func UIPackagesPaneSortOrder() SortOrder {
+	return cfg.UI.Panes.Packages.Sort.Order
+}
+
+func UIArtifactsPaneSortField() string {
+	return cfg.UI.Panes.Artifacts.Sort.Field
+}
+
+func UIArtifactsPaneSortOrder() SortOrder {
+	return cfg.UI.Panes.Artifacts.Sort.Order
 }
 
 func (c *Config) load(configFile string) error {
@@ -167,5 +209,35 @@ func (c *Config) setDefaults() {
 		c.UI.Layout = layout
 	default:
 		c.UI.Layout = LayoutNormal
+	}
+
+	// Set content packages sort field.
+	if c.UI.Panes.Packages.Sort.Field == "" {
+		c.UI.Panes.Packages.Sort.Field = "ID"
+	}
+
+	// Set content packages sort order.
+	packagesSortOrder := SortOrder(strings.ToLower(string(c.UI.Panes.Packages.Sort.Order)))
+
+	switch packagesSortOrder {
+	case SortOrderAscending, SortOrderDescending:
+		c.UI.Panes.Packages.Sort.Order = packagesSortOrder
+	default:
+		c.UI.Panes.Packages.Sort.Order = SortOrderAscending
+	}
+
+	// Set integration artifacts sort field.
+	if c.UI.Panes.Artifacts.Sort.Field == "" {
+		c.UI.Panes.Artifacts.Sort.Field = "ID"
+	}
+
+	// Set integration artifacts sort order.
+	artifactsSortOrder := SortOrder(strings.ToLower(string(c.UI.Panes.Artifacts.Sort.Order)))
+
+	switch artifactsSortOrder {
+	case SortOrderAscending, SortOrderDescending:
+		c.UI.Panes.Artifacts.Sort.Order = artifactsSortOrder
+	default:
+		c.UI.Panes.Artifacts.Sort.Order = SortOrderAscending
 	}
 }

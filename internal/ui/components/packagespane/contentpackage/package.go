@@ -2,6 +2,7 @@ package contentpackage
 
 import (
 	"net/url"
+	"slices"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -11,6 +12,7 @@ import (
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
+	"github.com/vadimklimov/cpi-navigator/internal/ui/common/sort"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/attributespane/attribute"
 )
 
@@ -58,15 +60,6 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = make([]tea.Cmd, 0)
 	)
 
-	packagesToList := func(packages []api.ContentPackage) []list.Item {
-		items := make([]list.Item, 0, len(packages))
-		for _, pkg := range packages {
-			items = append(items, Item(pkg))
-		}
-
-		return items
-	}
-
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
@@ -78,7 +71,7 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case ContentPackagesMsg:
-		model.packages.SetItems(packagesToList(msg))
+		model.packages.SetItems(convertPackagesToListItems(msg))
 	}
 
 	return model, tea.Batch(cmds...)
@@ -148,4 +141,18 @@ func (model *Model) SelectedPackageWebUIURL() *url.URL {
 	}
 
 	return tenantWorkspaceWebUIURL.JoinPath("contentpackage", *selectedPackageID)
+}
+
+func convertPackagesToListItems(packages []api.ContentPackage) []list.Item {
+	sort.Sort(packages, sort.Options{
+		Field: config.UIPackagesPaneSortField(),
+		Order: config.UIPackagesPaneSortOrder(),
+	})
+
+	items := make([]list.Item, 0, len(packages))
+	for pkg := range slices.Values(packages) {
+		items = append(items, Item(pkg))
+	}
+
+	return items
 }

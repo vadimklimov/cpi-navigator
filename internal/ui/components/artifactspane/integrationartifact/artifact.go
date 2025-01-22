@@ -2,6 +2,7 @@ package integrationartifact
 
 import (
 	"net/url"
+	"slices"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -11,6 +12,7 @@ import (
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common/err"
+	"github.com/vadimklimov/cpi-navigator/internal/ui/common/sort"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/artifactspane/tab"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/components/attributespane/attribute"
 )
@@ -81,15 +83,6 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmds = make([]tea.Cmd, 0)
 	)
 
-	artifactsToList := func(artifacts []api.IntegrationArtifact) []list.Item {
-		items := make([]list.Item, 0, len(artifacts))
-		for _, artifact := range artifacts {
-			items = append(items, Item(artifact))
-		}
-
-		return items
-	}
-
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
@@ -112,16 +105,16 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		model.selectedArtifactType = string(msg)
 
 	case IntegrationFlowsMsg:
-		model.integrationflows.SetItems(artifactsToList(msg))
+		model.integrationflows.SetItems(convertArtifactsToListItems(msg))
 
 	case ValueMappingsMsg:
-		model.valuemappings.SetItems(artifactsToList(msg))
+		model.valuemappings.SetItems(convertArtifactsToListItems(msg))
 
 	case MessageMappingsMsg:
-		model.messagemappings.SetItems(artifactsToList(msg))
+		model.messagemappings.SetItems(convertArtifactsToListItems(msg))
 
 	case ScriptCollectionsMsg:
-		model.scriptcollections.SetItems(artifactsToList(msg))
+		model.scriptcollections.SetItems(convertArtifactsToListItems(msg))
 	}
 
 	return model, tea.Batch(cmds...)
@@ -328,4 +321,18 @@ func (model *Model) SelectedArtifactWebUIURL() *url.URL {
 		"contentpackage", *selectedArtifactPackageID,
 		selectedArtifactResourceType, *selectedArtifactID,
 	)
+}
+
+func convertArtifactsToListItems(artifacts []api.IntegrationArtifact) []list.Item {
+	sort.Sort(artifacts, sort.Options{
+		Field: config.UIArtifactsPaneSortField(),
+		Order: config.UIArtifactsPaneSortOrder(),
+	})
+
+	items := make([]list.Item, 0, len(artifacts))
+	for artifact := range slices.Values(artifacts) {
+		items = append(items, Item(artifact))
+	}
+
+	return items
 }

@@ -7,17 +7,26 @@ import (
 )
 
 type ContentPackage struct {
-	ID           string `json:"Id"`
-	Version      string `json:"Version"`
-	Name         string `json:"Name"`
-	ShortText    string `json:"ShortText"`
-	Description  string `json:"Description"`
-	Vendor       string `json:"Vendor"`
-	Mode         string `json:"Mode"`
-	CreatedBy    string `json:"CreatedBy"`
-	CreationDate int64  `json:"CreationDate,string"`
-	ModifiedBy   string `json:"ModifiedBy"`
-	ModifiedDate int64  `json:"ModifiedDate,string"`
+	ID                string `json:"Id"`
+	Version           string `json:"Version"`
+	Name              string `json:"Name"`
+	ShortText         string `json:"ShortText"`
+	Description       string `json:"Description"`
+	Vendor            string `json:"Vendor"`
+	PartnerContent    bool   `json:"PartnerContent"`
+	Mode              string `json:"Mode"`
+	UpdateAvailable   bool   `json:"UpdateAvailable"`
+	SupportedPlatform string `json:"SupportedPlatform"`
+	Products          string `json:"Products"`
+	Keywords          string `json:"Keywords"`
+	Countries         string `json:"Countries"`
+	Industries        string `json:"Industries"`
+	LineOfBusiness    string `json:"LineOfBusiness"`
+	ResourceID        string `json:"ResourceId"`
+	CreatedBy         string `json:"CreatedBy"`
+	CreationDate      int64  `json:"CreationDate,string"`
+	ModifiedBy        string `json:"ModifiedBy"`
+	ModifiedDate      int64  `json:"ModifiedDate,string"`
 }
 
 func ContentPackages() ([]ContentPackage, error) {

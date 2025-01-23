@@ -112,9 +112,39 @@ The `ui` configuration section.
 | --------- | ---------------------------------------------------------------------------------------------- |
 | layout    | _(optional)_ Layout. Valid values: `normal` (default), `compact` (no title bar and status bar) |
 
-### Example
+The `ui` configuration section supports the following subsections for pane customization:
 
-Below is an example of a `config.yaml` file:
+- `packages_pane`: configures the content packages pane
+- `artifacts_pane`: configures the integration artifacts pane
+
+Each pane subsection supports the following parameters:
+
+| Parameter  | Description                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| sort_field | _(optional)_ Sort field. Refer to [Sort fields](#sort-fields) for the list of supported fields |
+| sort_order | _(optional)_ Sort order. Valid values: `asc` (ascending) (default), `desc` (descending)        |
+
+#### Sort fields
+
+- Content packages pane: `ID` (default), `Version`, `Name`, `ShortText`, `Description`, `Vendor`, `PartnerContent`, `Mode`, `UpdateAvailable`, `SupportedPlatform`, `Products`, `Keywords`, `Countries`, `Industries`, `LineOfBusiness`, `ResourceID`, `CreatedBy`, `CreationDate`, `ModifiedBy`, `ModifiedDate`
+- Integration artifacts pane: `ID` (default), `Version`, `PackageID`, `Name`, `Description`, `CreatedBy`, `CreatedAt`, `ModifiedBy`, `ModifiedAt`
+
+### Examples
+
+Below are examples of a `config.yaml` file.
+
+Minimum configuration (required parameters only):
+
+```yaml
+tenant:
+  webui_url: https://<subdomain>.integrationsuite.cfapps.<region>.hana.ondemand.com
+  base_url: https://<subdomain>.it-cpi<xxxxx>.cfapps.<region>.hana.ondemand.com/api/v1
+  token_url: https://<subdomain>.authentication.<region>.hana.ondemand.com/oauth/token
+  client_id: xxxxxxxxxx
+  client_secret: xxxxxxxxxx
+```
+
+Full configuration (all supported parameters):
 
 ```yaml
 tenant:
@@ -126,6 +156,12 @@ tenant:
   client_secret: xxxxxxxxxx
 ui:
   layout: normal
+  packages_pane:
+    sort_field: Name
+    sort_order: asc
+  artifacts_pane:
+    sort_field: ModifiedAt
+    sort_order: desc
 ```
 
 ## Usage

@@ -106,15 +106,19 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case IntegrationFlowsMsg:
 		model.integrationflows.SetItems(convertArtifactsToListItems(msg))
+		model.integrationflows.ResetSelected()
 
 	case ValueMappingsMsg:
 		model.valuemappings.SetItems(convertArtifactsToListItems(msg))
+		model.valuemappings.ResetSelected()
 
 	case MessageMappingsMsg:
 		model.messagemappings.SetItems(convertArtifactsToListItems(msg))
+		model.messagemappings.ResetSelected()
 
 	case ScriptCollectionsMsg:
 		model.scriptcollections.SetItems(convertArtifactsToListItems(msg))
+		model.scriptcollections.ResetSelected()
 	}
 
 	return model, tea.Batch(cmds...)

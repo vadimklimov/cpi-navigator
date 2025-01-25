@@ -3,15 +3,16 @@ package keymap
 import "github.com/charmbracelet/bubbles/key"
 
 type KeyMap struct {
-	Up     key.Binding
-	Down   key.Binding
-	Left   key.Binding
-	Right  key.Binding
-	Enter  key.Binding
-	Tab    key.Binding
-	Quit   key.Binding
-	Layout key.Binding
-	Open   key.Binding
+	Up      key.Binding
+	Down    key.Binding
+	Left    key.Binding
+	Right   key.Binding
+	Enter   key.Binding
+	Tab     key.Binding
+	Quit    key.Binding
+	Layout  key.Binding
+	Refresh key.Binding
+	Open    key.Binding
 }
 
 func DefaultKeyMap() *KeyMap {
@@ -55,6 +56,11 @@ func DefaultKeyMap() *KeyMap {
 	keymap.Layout = key.NewBinding(
 		key.WithKeys("l"),
 		key.WithHelp("l", "layout"),
+	)
+
+	keymap.Refresh = key.NewBinding(
+		key.WithKeys("r"),
+		key.WithHelp("r", "refresh"),
 	)
 
 	keymap.Open = key.NewBinding(

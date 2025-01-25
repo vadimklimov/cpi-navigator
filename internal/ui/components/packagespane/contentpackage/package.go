@@ -72,6 +72,7 @@ func (model *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case ContentPackagesMsg:
 		model.packages.SetItems(convertPackagesToListItems(msg))
+		model.packages.ResetSelected()
 	}
 
 	return model, tea.Batch(cmds...)

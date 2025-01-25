@@ -164,6 +164,23 @@ func (model Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				)
 			}
 
+		case key.Matches(msg, model.common.KeyMap.Refresh):
+			switch model.activePane {
+			case PackagesPane:
+				cmds = append(cmds,
+					model.artifacts.Init(),
+					model.tabs.Init(),
+					model.packages.ContentPackagesCmd,
+				)
+
+			case ArtifactsPane:
+				if model.packages.SelectedPackageID() != nil {
+					cmds = append(cmds,
+						model.artifacts.IntegrationArtifactsByPackageCmd(*model.packages.SelectedPackageID()),
+					)
+				}
+			}
+
 		case key.Matches(msg, model.common.KeyMap.Open):
 			switch model.activePane {
 			case PackagesPane:
@@ -221,6 +238,12 @@ func (model Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if cmd != nil {
 			cmds = append(cmds, cmd)
+		}
+
+		if model.activePane == ArtifactsPane {
+			cmds = append(cmds,
+				model.attributes.AttributesCmd(model.artifacts.SelectedArtifactAttributes()),
+			)
 		}
 
 	case attribute.AttributesMsg:

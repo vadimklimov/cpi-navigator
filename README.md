@@ -191,6 +191,7 @@ The following key bindings are supported:
 | ← / →        | Navigate to the previous/next tab in the integration artifacts pane                     |
 | q / Ctrl + C | Quit the application                                                                    |
 | l            | Toggle layout (switch between normal and compact layouts)                               |
+| r            | Refresh items in the active pane                                                        |
 | o            | Open the selected content package or integration artifact in Web UI                     |
 
 ## Notes

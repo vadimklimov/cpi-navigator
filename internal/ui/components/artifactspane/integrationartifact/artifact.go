@@ -3,11 +3,11 @@ package integrationartifact
 import (
 	"net/url"
 	"slices"
+	"time"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/golang-module/carbon/v2"
 	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
@@ -273,9 +273,9 @@ func (model *Model) SelectedArtifactAttributes() []attribute.Attribute {
 			{Key: "Name", Value: artifact.Name},
 			{Key: "Description", Value: artifact.Description},
 			{Key: "Created by", Value: artifact.CreatedBy},
-			{Key: "Created at", Value: carbon.CreateFromTimestampMilli(artifact.CreatedAt).ToIso8601ZuluString()},
+			{Key: "Created at", Value: time.UnixMilli(artifact.CreatedAt).UTC().Format(time.RFC3339)},
 			{Key: "Modified by", Value: artifact.ModifiedBy},
-			{Key: "Modified at", Value: carbon.CreateFromTimestampMilli(artifact.ModifiedAt).ToIso8601ZuluString()},
+			{Key: "Modified at", Value: time.UnixMilli(artifact.ModifiedAt).UTC().Format(time.RFC3339)},
 		}
 
 	case supportedArtifactTypes.Designtime.ValueMapping.Name,

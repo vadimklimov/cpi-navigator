@@ -3,11 +3,11 @@ package contentpackage
 import (
 	"net/url"
 	"slices"
+	"time"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/golang-module/carbon/v2"
 	"github.com/vadimklimov/cpi-navigator/internal/config"
 	"github.com/vadimklimov/cpi-navigator/internal/cpi/api"
 	"github.com/vadimklimov/cpi-navigator/internal/ui/common"
@@ -122,9 +122,9 @@ func (model *Model) SelectedPackageAttributes() []attribute.Attribute {
 		{Key: "Vendor", Value: pkg.Vendor},
 		{Key: "Mode", Value: pkg.Mode},
 		{Key: "Created by", Value: pkg.CreatedBy},
-		{Key: "Created at", Value: carbon.CreateFromTimestampMilli(pkg.CreationDate).ToIso8601ZuluString()},
+		{Key: "Created at", Value: time.UnixMilli(pkg.CreationDate).UTC().Format(time.RFC3339)},
 		{Key: "Modified by", Value: pkg.ModifiedBy},
-		{Key: "Modified at", Value: carbon.CreateFromTimestampMilli(pkg.ModifiedDate).ToIso8601ZuluString()},
+		{Key: "Modified at", Value: time.UnixMilli(pkg.ModifiedDate).UTC().Format(time.RFC3339)},
 	}
 }
 

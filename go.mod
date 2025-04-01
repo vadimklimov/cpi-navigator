@@ -1,7 +1,6 @@
 module github.com/vadimklimov/cpi-navigator
 
 go 1.24.1
-
 require (
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.3.4
@@ -15,7 +14,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.19.0
 	golang.org/x/net v0.35.0
-	golang.org/x/oauth2 v0.27.0
+	golang.org/x/oauth2 v0.28.0
 )
 
 require (

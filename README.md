@@ -1,5 +1,6 @@
 # Cloud Integration Navigator
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0acef1a45ca84c1abbc28929f923444e)](https://app.codacy.com/gh/vadimklimov/cpi-navigator?utm_source=github.com&utm_medium=referral&utm_content=vadimklimov/cpi-navigator&utm_campaign=Badge_Grade)
 [![Latest release](https://img.shields.io/github/release/vadimklimov/cpi-navigator)](https://github.com/vadimklimov/cpi-navigator/releases/latest)
 [![Codacy](https://app.codacy.com/project/badge/Grade/95069cb0a3f24e43a91978cd1d5bbeb2)](https://app.codacy.com/gh/vadimklimov/cpi-navigator/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![License](https://img.shields.io/github/license/vadimklimov/cpi-navigator)](https://opensource.org/license/MIT)

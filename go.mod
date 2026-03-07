@@ -1,6 +1,6 @@
 module github.com/vadimklimov/cpi-navigator
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/charmbracelet/bubbles v1.0.0
